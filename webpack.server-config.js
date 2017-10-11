@@ -10,9 +10,6 @@ module.exports = {
     name: 'SSR',
     target: 'node',
     entry: {
-         //#1
-        testServerBundle: './test_server/server.js',
-        // #2
         serverBundle: './server/index.js',
     },
     context: `${__dirname}/`,
@@ -32,7 +29,7 @@ module.exports = {
                 loader: 'babel-loader?presets[]=es2015&presets[]=react&presets[]=stage-1',
                 include: [`${__dirname}/static_src`, `${__dirname}/server`, `${__dirname}/test_server`]
             },
-            // #2
+
             {
                 test: /\.(css|scss)$/,
                 loader: 'ignore-loader',

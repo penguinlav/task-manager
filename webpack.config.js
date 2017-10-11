@@ -1,8 +1,10 @@
 const webpack = require('webpack');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
+const cssName = process.env.NODE_ENV === 'production' ? 'styles-[hash].css' : 'styles.css';
 
-const URL = 'http://antons-shit-spa-server.yeah/';
+const URL = 'http://antons-shit.com/';
 
 module.exports = {
     entry: {
@@ -22,19 +24,24 @@ module.exports = {
             SERVER_URL: JSON.stringify(URL),
         }),
         new webpack.NoEmitOnErrorsPlugin(),
+        new ExtractTextPlugin(cssName),
     ],
 
     module: {
+
         rules: [
+
+            {
+                test: /\.css$/,
+                use: ExtractTextPlugin.extract({
+                    fallback: 'style-loader',
+                    use: 'css-loader',
+                }),
+            },
             {
                 test: /\.(js|jsx)$/,
                 include: `${__dirname}/static_src`,
-                //include: `${__dirname}/test_server`,
                 loader: 'babel-loader?presets[]=react&presets[]=env&presets[]=stage-1',
-            },
-            {
-                test: /\.css$/,
-                loader: 'style-loader!css-loader',
             },
             {
                 test: /\.scss$/,
